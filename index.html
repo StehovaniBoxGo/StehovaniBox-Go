@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Stěhování Box&Go — Stěhování v Praze a po celé ČR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <meta name="description" content="Stěhování Box&Go — надежные переезды в Праге и по всей Чехии. Грузчики, упаковка, расчёт стоимости онлайн. Тел: +420 776 517 711">
+  <meta name="keywords" content="stěhování, переезд Прага, грузчики, перевозки Чехия, moving Prague, movers">
+  <meta property="og:title" content="Stěhování Box&Go — Moving in Prague & Czechia">
+  <meta property="og:description" content="Переезды по Праге и всей Чехии. Онлайн-калькулятор, отзыв в Telegram, звонок в один клик.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#ff6600">
+
+  <style>
+    :root{--brand:#ff6600;--bg1:#111;--bg2:#1a1a1a;--text:#fff;--muted:rgba(255,255,255,.75);}
+    *{box-sizing:border-box}
+    body{
+      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      margin:0; color:var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--brand));
+      overflow-x:hidden;
+    }
+    header{
+      text-align:center; padding:20px; position:relative;
+      background:linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.35));
+      backdrop-filter:saturate(120%) blur(2px);
+    }
+    h1{margin:0; font-size:2rem}
+    .subtitle{margin:.4rem 0 0; color:var(--muted)}
+    section{
+      max-width: 980px; margin: 36px auto; padding: 22px;
+      background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    table{width:100%; border-collapse:collapse; margin-top:12px}
+    td{padding:12px; border-bottom:1px solid rgba(255,255,255,.25)}
+    ul.benefits{list-style:none; padding:0; margin:0}
+    ul.benefits li{margin:10px 0}
+
+    .fade-in-up{opacity:0; transform:translateY(40px); transition:all .8s ease}
+    .fade-in-up.show{opacity:1; transform:translateY(0)}
+
+    /* Языки */
+    .lang-container{position:absolute; top:14px; right:18px}
+    .lang-btn{
+      background:var(--brand); color:#fff; border:none;
+      padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700;
+      box-shadow:0 6px 16px rgba(255,102,0,.35);
+    }
+    .lang-menu{
+      position:absolute; right:0; top:44px; width:180px;
+      background:rgba(0,0,0,.9); border:1px solid rgba(255,255,255,.12);
+      border-radius:10px; overflow:hidden;
+      max-height:0; transition:max-height .35s ease;
+    }
+    .lang-menu.show{max-height:200px}
+    .lang-menu button{
+      display:block; width:100%; padding:10px 14px;
+      background:none; border:none; color:#fff; text-align:left; cursor:pointer;
+    }
+    .lang-menu button:hover{background:rgba(255,255,255,.08)}
+
+    /* Кнопка Заказать */
+    .order-btn{
+      display:block; margin:32px auto 14px;
+      padding:14px 28px; background:var(--brand); color:#fff; font-size:1.2rem; font-weight:800;
+      border:none; border-radius:12px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+      box-shadow:0 10px 24px rgba(255,102,0,.35);
+    }
+    .order-btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(255,102,0,.45)}
+
+    /* Контакты панель */
+    .contact-panel{
+      position:fixed; left:0; bottom:-220px; width:100%;
+      background:rgba(0,0,0,.92); border-top:1px solid rgba(255,255,255,.1);
+      padding:16px; text-align:center; transition:bottom .45s ease; z-index:20;
+    }
+    .contact-panel.show{bottom:0}
+    .contact-panel a{
+      display:inline-block; margin:10px; padding:12px 20px; background:var(--brand);
+      color:#fff; border-radius:10px; font-weight:700; text-decoration:none;
+      box-shadow:0 8px 18px rgba(255,102,0,.35);
+    }
+    .contact-panel a:hover{background:#ff7d26}
+
+    /* Форма отзывов */
+    #feedbackForm{display:flex; flex-direction:column; gap:10px; margin-top:10px}
+    #feedbackForm input, #feedbackForm textarea, #calc select, #calc input{
+      padding:12px; border-radius:10px; border:none; outline:none;
+      background:rgba(255,255,255,.15); color:#fff;
+    }
+    #feedbackForm textarea{min-height:110px; resize:vertical}
+    .btn{
+      padding:12px 18px; background:var(--brand); color:#fff; border:none; border-radius:10px; font-weight:800; cursor:pointer;
+      box-shadow:0 8px 18px rgba(255,102,0,.35);
+    }
+    .btn:hover{background:#ff7d26}
+
+    /* Калькулятор */
+    #calc .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+    #calc .row{display:flex; flex-direction:column; gap:6px}
+    #calc .total{
+      margin-top:12px; padding:12px; border-radius:10px; background:rgba(0,0,0,.4);
+      font-weight:800; font-size:1.1rem;
+    }
+    #kmRow{display:none}
+
+    /* Floating Call Now */
+    .call-now{
+      position:fixed; right:18px; bottom:18px; z-index:25;
+      width:56px; height:56px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--brand); color:#fff; text-decoration:none; font-size:22px; font-weight:900;
+      box-shadow:0 12px 26px rgba(255,102,0,.45);
+    }
+    .call-now:hover{transform:translateY(-2px)}
+    .call-label{
+      position:absolute; right:74px; bottom:26px; background:rgba(0,0,0,.85);
+      padding:6px 10px; border-radius:8px; font-size:.9rem; border:1px solid rgba(255,255,255,.12);
+      white-space:nowrap;
+    }
+
+    footer{text-align:center; padding:22px; background:rgba(0,0,0,.7); margin-top:60px}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🚚 Stěhování Box&Go</h1>
+    <p id="subtitle" class="subtitle">Надежные грузоперевозки в Праге и по всей Чехии</p>
+
+    <div class="lang-container">
+      <button id="langBtn" class="lang-btn" onclick="toggleLangMenu()">🌐 Язык</button>
+      <div id="langMenu" class="lang-menu">
+        <button onclick="setLang('ru')">Русский</button>
+        <button onclick="setLang('cs')">Čeština</button>
+        <button onclick="setLang('en')">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Прайс -->
+  <section id="pricing" class="fade-in-up">
+    <h2 id="pricing-title">📋 Прайс-лист</h2>
+    <table>
+      <tr><td id="row1">🚚 Грузоперевозки по Праге</td><td id="price1">от 600 Kč/час</td></tr>
+      <tr><td id="row2">🚛 Грузоперевозки по Чехии</td><td id="price2">от 12 Kč/км</td></tr>
+      <tr><td id="row3">👷 Услуги грузчика</td><td id="price3">от 300 Kč/час</td></tr>
+      <tr><td id="row4">📦 Упаковочные материалы</td><td id="price4">от 50 Kč/шт</td></tr>
+      <tr><td id="row5">🏠 Квартирные и офисные переезды</td><td id="price5">от 2 500 Kč</td></tr>
+    </table>
+    <ul class="benefits" id="benefits-list">
+      <li>✅ Минимальный заказ – 1.5 часа</li>
+      <li>✅ Работаем без выходных, в том числе вечером</li>
+      <li>✅ Индивидуальный расчёт для крупных заказов и междугородних перевозок</li>
+    </ul>
+  </section>
+
+  <!-- Расширенный калькулятор -->
+  <section id="calc" class="fade-in-up">
+    <h2 id="calc-title">Онлайн-калькулятор перевозки</h2>
+    <div class="grid">
+      <div class="row">
+        <label id="calc-type-label">Тип перевозки</label>
+        <select id="type">
+          <option id="opt-prague" value="prague">По Праге</option>
+          <option id="opt-cz" value="cz">По Чехии</option>
+        </select>
+      </div>
+      <div class="row">
+        <label id="calc-hours-label">Часы работы (мин. 1.5)</label>
+        <input id="hours" type="number" step="0.5" min="1.5" value="2">
+      </div>
+      <div class="row">
+        <label id="calc-movers-label">Грузчики</label>
+        <select id="movers">
+          <option id="opt-m0" value="0">Без грузчиков</option>
+          <option id="opt-m1" value="1">1 грузчик</option>
+          <option id="opt-m2" value="2">2 грузчика</option>
+        </select>
+      </div>
+      <div class="row">
+        <label id="calc-pack-label">Упаковочные материалы (шт)</label>
+        <input id="packs" type="number" min="0" value="0">
+      </div>
+      <div class="row" id="kmRow">
+        <label id="calc-km-label">Километры (межгород)</label>
+        <input id="km" type="number" min="0" value="0">
+      </div>
+      <div class="row">
+        <label id="calc-photo-label">Фото объёма (по желанию)</label>
+        <input id="photo" type="file" accept="image/*">
+      </div>
+    </div>
+
+    <div class="total">
+      <span id="calc-total-label">Итого:</span> <span id="total">0 Kč</span>
+    </div>
+
+    <button id="calc-send" class="btn" style="margin-top:12px;">Отправить заявку</button>
+    <div id="calc-status" style="margin-top:10px; color:#c6ffc6;"></div>
+  </section>
+
+  <!-- Отзывы -->
+  <section id="feedback" class="fade-in-up">
+    <h2 id="feedback-title">Отзывы и предзаказы</h2>
+    <form id="feedbackForm">
+      <label id="name-label">Ваше имя:</label>
+      <input type="text" id="name" required>
+
+      <label id="message-label">Сообщение:</label>
+      <textarea id="message" required></textarea>
+
+      <button type="submit" id="sendBtn" class="btn">Отправить</button>
+    </form>
+    <p id="status"></p>
+  </section>
+
+  <!-- Кнопка заказать -->
+  <button id="order-btn" class="order-btn" onclick="handleOrderClick()">Заказать сейчас</button>
+
+  <!-- Контакты -->
+  <div id="contactPanel" class="contact-panel">
+    <a href="tel:+420776517711" onclick="sendContactToBot('Телефон 📞')">📞 +420 776 517 711</a>
+    <a href="https://t.me/StehovaniBoxGO" target="_blank" onclick="sendContactToBot('Telegram 💬')">💬 Telegram</a>
+    <a href="https://wa.me/420776517711" target="_blank" onclick="sendContactToBot('WhatsApp 📱')">📱 WhatsApp</a>
+  </div>
+
+  <!-- Floating Call Now -->
+  <a class="call-now" href="tel:+420776517711" title="+420 776 517 711">📞</a>
+  <div class="call-label" id="call-now-label">Позвонить сейчас</div>
+
+  <footer>© 2025 Stěhování Box&Go</footer>
+
+  <script>
+    // ------------ Анимация появления -------------
+    document.addEventListener("DOMContentLoaded", () => {
+      const els = document.querySelectorAll(".fade-in-up");
+      function showOnScroll(){
+        const trg = window.innerHeight * 0.85;
+        els.forEach(el => { if(el.getBoundingClientRect().top < trg) el.classList.add("show"); });
+      }
+      window.addEventListener("scroll", showOnScroll); showOnScroll();
+    });
+
+    // ------------ Телеграм параметры -------------
+    const BOT_TOKEN = "8459451294:AAFW6WJ36XSj1Sruy5suzjbzJ6r6Pv4Qr2s";
+    const CHAT_ID  = "7665661319";
+    const URL_SEND = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const URL_PHOTO= `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+
+    // ------------ Геолокация по IP -------------
+    let userLocation = "Неизвестно";
+    fetch("https://ipinfo.io/json?token=1ce8e5b3d02b0c")
+      .then(r=>r.json()).then(d=>{ userLocation = `${d.ip}, ${d.city||"?"}, ${d.country||"?"}`; })
+      .catch(()=>{ userLocation = "Ошибка определения"; });
+
+    const dt = () => new Date().toLocaleString("ru-RU");
+
+    // ------------ Языки -------------
+    let currentLang = "ru";
+    const tr = {
+      ru:{
+        subtitle:"Надежные грузоперевозки в Праге и по всей Чехии",
+        pricing:"📋 Прайс-лист",
+        rows:["🚚 Грузоперевозки по Праге","🚛 Грузоперевозки по Чехии","👷 Услуги грузчика","📦 Упаковочные материалы","🏠 Квартирные и офисные переезды"],
+        prices:["от 600 Kč/час","от 12 Kč/км","от 300 Kč/час","от 50 Kč/шт","от 2 500 Kč"],
+        benefitsTitle:"Наши преимущества",
+        benefits:[
+          "✅ Минимальный заказ – 1.5 часа",
+          "✅ Работаем без выходных, в том числе вечером",
+          "✅ Индивидуальный расчёт для крупных заказов и междугородних перевозок"
+        ],
+        orderBtn:"Заказать сейчас",
+        langBtn:"🌐 Язык",
+        langName:"Русский",
+        calcTitle:"Онлайн-калькулятор перевозки",
+        calcTypeLabel:"Тип перевозки",
+        optPrague:"По Праге",
+        optCZ:"По Чехии",
+        calcHours:"Часы работы (мин. 1.5)",
+        calcMovers:"Грузчики",
+        movers:["Без грузчиков","1 грузчик","2 грузчика"],
+        calcPack:"Упаковочные материалы (шт)",
+        calcKm:"Километры (межгород)",
+        total:"Итого:",
+        sendCalc:"Отправить заявку",
+        callNow:"Позвонить сейчас",
+        feedbackTitle:"Отзывы и предзаказы",
+        nameLabel:"Ваше имя:",
+        msgLabel:"Сообщение:",
+        sendBtn:"Отправить",
+        sent:"✅ Отправлено!",
+        netErr:"⚠️ Ошибка сети."
+      },
+      cs:{
+        subtitle:"Spolehlivé stěhovací služby v Praze a po celé ČR",
+        pricing:"📋 Ceník služeb",
+        rows:["🚚 Stěhování po Praze","🚛 Stěhování po ČR","👷 Pracovníci na nakládku/vykládku","📦 Obalový materiál","🏠 Bytové a kancelářské stěhování"],
+        prices:["od 600 Kč/hod","od 12 Kč/km","od 300 Kč/hod","od 50 Kč/ks","od 2 500 Kč"],
+        benefitsTitle:"Naše výhody",
+        benefits:[
+          "✅ Minimální objednávka – 1,5 hodiny",
+          "✅ Pracujeme i o víkendech a večer",
+          "✅ Individuální kalkulace pro velké zakázky a dálkové stěhování"
+        ],
+        orderBtn:"Objednat nyní",
+        langBtn:"🌐 Jazyk",
+        langName:"Čeština",
+        calcTitle:"Online kalkulačka stěhování",
+        calcTypeLabel:"Typ stěhování",
+        optPrague:"V Praze",
+        optCZ:"Po ČR",
+        calcHours:"Hodiny práce (min. 1,5)",
+        calcMovers:"Stěhováci",
+        movers:["Bez stěhováků","1 stěhovák","2 stěhováci"],
+        calcPack:"Obalový materiál (ks)",
+        calcKm:"Kilometry (mimoměsto)",
+        total:"Celkem:",
+        sendCalc:"Odeslat poptávku",
+        callNow:"Zavolat nyní",
+        feedbackTitle:"Recenze a předobjednávky",
+        nameLabel:"Vaše jméno:",
+        msgLabel:"Zpráva:",
+        sendBtn:"Odeslat",
+        sent:"✅ Odesláno!",
+        netErr:"⚠️ Chyba sítě."
+      },
+      en:{
+        subtitle:"Reliable moving services in Prague and across Czechia",
+        pricing:"📋 Price List",
+        rows:["🚚 Moving within Prague","🚛 Moving across Czechia","👷 Loader services","📦 Packing materials","🏠 Apartment & office moving"],
+        prices:["from 600 CZK/hour","from 12 CZK/km","from 300 CZK/hour","from 50 CZK/pc","from 2 500 CZK"],
+        benefitsTitle:"Our Benefits",
+        benefits:[
+          "✅ Minimum order – 1.5 hours",
+          "✅ We work weekends and evenings",
+          "✅ Individual quotes for large or long-distance moves"
+        ],
+        orderBtn:"Order Now",
+        langBtn:"🌐 Language",
+        langName:"English",
+        calcTitle:"Online Moving Calculator",
+        calcTypeLabel:"Move type",
+        optPrague:"Within Prague",
+        optCZ:"Across Czechia",
+        calcHours:"Work hours (min. 1.5)",
+        calcMovers:"Movers",
+        movers:["No movers","1 mover","2 movers"],
+        calcPack:"Packing materials (pcs)",
+        calcKm:"Distance (km, intercity)",
+        total:"Total:",
+        sendCalc:"Send Request",
+        callNow:"Call Now",
+        feedbackTitle:"Reviews & Pre-orders",
+        nameLabel:"Your name:",
+        msgLabel:"Message:",
+        sendBtn:"Send",
+        sent:"✅ Sent!",
+        netErr:"⚠️ Network error."
+      }
+    };
+
+    function applyTranslations(){
+      const t = tr[currentLang];
+      document.getElementById("subtitle").innerText = t.subtitle;
+      document.getElementById("pricing-title").innerText = t.pricing;
+      document.getElementById("row1").innerText = t.rows[0];
+      document.getElementById("row2").innerText = t.rows[1];
+      document.getElementById("row3").innerText = t.rows[2];
+      document.getElementById("row4").innerText = t.rows[3];
+      document.getElementById("row5").innerText = t.rows[4];
+      document.getElementById("price1").innerText = t.prices[0];
+      document.getElementById("price2").innerText = t.prices[1];
+      document.getElementById("price3").innerText = t.prices[2];
+      document.getElementById("price4").innerText = t.prices[3];
+      document.getElementById("price5").innerText = t.prices[4];
+      document.getElementById("benefits-title")?.remove(); // старый заголовок в прайсе отсутствует — на всякий
+      // benefits список
+      const bl = document.getElementById("benefits-list"); bl.innerHTML="";
+      t.benefits.forEach(x=>{ const li=document.createElement("li"); li.textContent=x; bl.appendChild(li); });
+
+      document.getElementById("order-btn").innerText = t.orderBtn;
+      document.getElementById("langBtn").innerText = t.langBtn;
+      document.getElementById("call-now-label").innerText = t.callNow;
+
+      // calc
+      document.getElementById("calc-title").innerText = t.calcTitle;
+      document.getElementById("calc-type-label").innerText = t.calcTypeLabel;
+      document.getElementById("opt-prague").innerText = t.optPrague;
+      document.getElementById("opt-cz").innerText = t.optCZ;
+      document.getElementById("calc-hours-label").innerText = t.calcHours;
+      document.getElementById("calc-movers-label").innerText = t.calcMovers;
+      document.getElementById("opt-m0").innerText = t.movers[0];
+      document.getElementById("opt-m1").innerText = t.movers[1];
+      document.getElementById("opt-m2").innerText = t.movers[2];
+      document.getElementById("calc-pack-label").innerText = t.calcPack;
+      document.getElementById("calc-km-label").innerText = t.calcKm;
+      document.getElementById("calc-photo-label").innerText = t.calcPhotoLabel || "Фото объёма (по желанию)";
+      document.getElementById("calc-total-label").innerText = t.total;
+      document.getElementById("calc-send").innerText = t.sendCalc;
+
+      // feedback
+      document.getElementById("feedback-title").innerText = t.feedbackTitle;
+      document.getElementById("name-label").innerText = t.nameLabel;
+      document.getElementById("message-label").innerText = t.msgLabel;
+      document.getElementById("sendBtn").innerText = t.sendBtn;
+    }
+
+    function toggleLangMenu(){ document.getElementById("langMenu").classList.toggle("show"); }
+    function setLang(l){ currentLang = l; applyTranslations(); toggleLangMenu(); updateCalc(); }
+
+    // Автовыбор языка
+    (function autoLang(){
+      const nav = (navigator.language || "en").toLowerCase();
+      if(nav.startsWith("ru")) currentLang="ru";
+      else if(nav.startsWith("cs") || nav.startsWith("sk")) currentLang="cs";
+      else currentLang="en";
+      applyTranslations();
+    })();
+
+    // ------------ Калькулятор -------------
+    const PRICE_HOUR = 600;     // Kč/hour
+    const PRICE_KM   = 12;      // Kč/km
+    const PRICE_MOVER= 300;     // Kč/hour per mover
+    const PRICE_PACK = 50;      // Kč/pc
+    const hoursEl = document.getElementById("hours");
+    const typeEl  = document.getElementById("type");
+    const moversEl= document.getElementById("movers");
+    const packsEl = document.getElementById("packs");
+    const kmEl    = document.getElementById("km");
+    const totalEl = document.getElementById("total");
+    const kmRow   = document.getElementById("kmRow");
+
+    function clampMin15(){
+      const v = parseFloat(hoursEl.value||"0");
+      if(v < 1.5){ hoursEl.value = "1.5"; }
+    }
+
+    function calcTotal(){
+      const type   = typeEl.value;         // prague | cz
+      const hours  = Math.max(1.5, parseFloat(hoursEl.value||"0"));
+      const movers = parseInt(moversEl.value||"0");
+      const packs  = Math.max(0, parseInt(packsEl.value||"0"));
+      const km     = Math.max(0, parseFloat(kmEl.value||"0"));
+
+      // Формула: базовое время + грузчики по часам + упаковка, + км если CZ
+      let total = hours * PRICE_HOUR + movers * PRICE_MOVER * hours + packs * PRICE_PACK;
+      if(type === "cz"){ total += km * PRICE_KM; }
+
+      return Math.round(total);
+    }
+
+    function updateCalc(){
+      clampMin15();
+      const type = typeEl.value;
+      kmRow.style.display = (type === "cz") ? "block" : "none";
+      totalEl.textContent = calcTotal().toLocaleString("ru-RU") + " Kč";
+    }
+
+    [typeEl, hoursEl, moversEl, packsEl, kmEl].forEach(el => el.addEventListener("input", updateCalc));
+    updateCalc();
+
+    // ------------ Отправка заявки из калькулятора -------------
+    document.getElementById("calc-send").addEventListener("click", async ()=>{
+      const langName = tr[currentLang].langName;
+      const typeTxt  = (typeEl.value === "prague") ? tr[currentLang].optPrague : tr[currentLang].optCZ;
+      const hours  = Math.max(1.5, parseFloat(hoursEl.value||"0"));
+      const movers = parseInt(moversEl.value||"0");
+      const packs  = Math.max(0, parseInt(packsEl.value||"0"));
+      const km     = Math.max(0, parseFloat(kmEl.value||"0"));
+      const total  = calcTotal();
+
+      const caption =
+`🧮 Новая заявка (калькулятор)
+🌐 Язык сайта: ${langName}
+📦 Тип: ${typeTxt}
+⏱ Часы: ${hours}
+👷 Грузчики: ${movers}
+📦 Упаковка: ${packs} шт
+🚛 Километры: ${km}
+💰 Итого: ${total} Kč
+🕒 Время: ${dt()}
+📍 Локация: ${userLocation}`;
+
+      const file = document.getElementById("photo").files[0];
+      try{
+        if(file){
+          const fd = new FormData();
+          fd.append("chat_id", CHAT_ID);
+          fd.append("photo", file);
+          fd.append("caption", caption);
+          await fetch(URL_PHOTO, { method:"POST", body: fd });
+        }else{
+          await fetch(URL_SEND, {
+            method:"POST", headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ chat_id: CHAT_ID, text: caption })
+          });
+        }
+        document.getElementById("calc-status").style.color = "#c6ffc6";
+        document.getElementById("calc-status").innerText = tr[currentLang].sent;
+      }catch(e){
+        document.getElementById("calc-status").style.color = "#ffd1d1";
+        document.getElementById("calc-status").innerText = tr[currentLang].netErr;
+        console.error(e);
+      }
+    });
+
+    // ------------ Форма отзывов / предзаказов -------------
+    document.getElementById("feedbackForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const msg  = document.getElementById("message").value.trim();
+      const langName = tr[currentLang].langName;
+
+      const text =
+`📩 Новый отзыв/предзаказ
+🌐 Язык сайта: ${langName}
+👤 Имя: ${name}
+💬 Сообщение: ${msg}
+🕒 Время: ${dt()}
+📍 Локация: ${userLocation}`;
+
+      try{
+        await fetch(URL_SEND, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ chat_id: CHAT_ID, text }) });
+        document.getElementById("status").innerText = tr[currentLang].sent;
+        document.getElementById("feedbackForm").reset();
+      }catch{
+        document.getElementById("status").innerText = tr[currentLang].netErr;
+      }
+    });
+
+    // ------------ Кнопка заказать (панель контактов + событие в боте) -------------
+    function toggleContacts(){ document.getElementById("contactPanel").classList.toggle("show"); }
+    async function handleOrderClick(){
+      toggleContacts();
+      const langName = tr[currentLang].langName;
+      const text = `📦 Кнопка заказа открыта\n🌐 Язык сайта: ${langName}\n🕒 Время: ${dt()}\n📍 Локация: ${userLocation}`;
+      try{ await fetch(URL_SEND, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ chat_id: CHAT_ID, text }) }); }catch(e){ console.error(e); }
+    }
+    async function sendContactToBot(type){
+      const langName = tr[currentLang].langName;
+      const text = `📞 Клиент выбрал связь: ${type}\n🌐 Язык сайта: ${langName}\n🕒 ${dt()}\n📍 ${userLocation}`;
+      try{ await fetch(URL_SEND, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ chat_id: CHAT_ID, text }) }); }catch(e){ console.error(e); }
+    }
+
+    // Закрытие меню языка по клику вне
+    document.addEventListener("click",(e)=>{
+      const m=document.getElementById("langMenu"), b=document.getElementById("langBtn");
+      if(!m.contains(e.target) && !b.contains(e.target)){ m.classList.remove("show"); }
+    });
+  </script>
+</body>
+</html>
